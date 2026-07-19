@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="モジラのたまご">
+  <rect width="512" height="512" rx="104" fill="#173f35"/>
+  <circle cx="256" cy="272" r="174" fill="#f4c84b"/>
+  <path d="M146 262c7-99 53-160 110-160s103 61 110 160c7 102-39 167-110 167s-117-65-110-167Z" fill="#fff4cf"/>
+  <path d="M156 280l55-44 47 38 50-48 52 43c-7 97-50 160-104 160-57 0-101-63-100-149Z" fill="#e47e4f"/>
+  <circle cx="225" cy="192" r="12" fill="#173f35"/><circle cx="292" cy="192" r="12" fill="#173f35"/>
+  <path d="M228 224q29 24 58 0" fill="none" stroke="#173f35" stroke-width="12" stroke-linecap="round"/>
+  <path d="M173 147l-24-36 45 9M339 147l24-36-45 9" fill="#8fbf5b" stroke="#173f35" stroke-width="9" stroke-linejoin="round"/>
+</svg>

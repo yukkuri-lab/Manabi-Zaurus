@@ -1,0 +1,131 @@
+import type { ReactNode } from 'react'
+
+type FuriganaPart = { text: string; reading?: string }
+
+const one = (text: string, reading: string): FuriganaPart[] => [{ text, reading }]
+
+const rules: Record<string, FuriganaPart[]> = {
+  '三本指': one('三本指', 'さんぼんゆび'),
+  '石文字': one('石文字', 'いしもじ'),
+  '書き問題': [{ text: '書', reading: 'か' }, { text: 'き' }, { text: '問題', reading: 'もんだい' }],
+  '木の実': [{ text: '木', reading: 'き' }, { text: 'の' }, { text: '実', reading: 'み' }],
+  '本物': one('本物', 'ほんもの'),
+  '世界': one('世界', 'せかい'),
+  '図鑑': one('図鑑', 'ずかん'),
+  '恐竜': one('恐竜', 'きょうりゅう'),
+  '漢字': one('漢字', 'かんじ'),
+  '発見': one('発見', 'はっけん'),
+  '冒険': one('冒険', 'ぼうけん'),
+  '保存': one('保存', 'ほぞん'),
+  '候補': one('候補', 'こうほ'),
+  '特技': one('特技', 'とくぎ'),
+  '推理': one('推理', 'すいり'),
+  '仲間': one('仲間', 'なかま'),
+  '証言': one('証言', 'しょうげん'),
+  '地図': one('地図', 'ちず'),
+  '地面': one('地面', 'じめん'),
+  '朝日': one('朝日', 'あさひ'),
+  '場所': one('場所', 'ばしょ'),
+  '設定': one('設定', 'せってい'),
+  '正解': one('正解', 'せいかい'),
+  '回答': one('回答', 'かいとう'),
+  '自動': one('自動', 'じどう'),
+  '画面': one('画面', 'がめん'),
+  '安全': one('安全', 'あんぜん'),
+  '丈夫': one('丈夫', 'じょうぶ'),
+  '判断': one('判断', 'はんだん'),
+  '背中': one('背中', 'せなか'),
+  '岩山': one('岩山', 'いわやま'),
+  '小川': one('小川', 'おがわ'),
+  '金色': one('金色', 'きんいろ'),
+  '黄色': one('黄色', 'きいろ'),
+  '矢印': one('矢印', 'やじるし'),
+  '材料': one('材料', 'ざいりょう'),
+  '完成': one('完成', 'かんせい'),
+  '主人公': one('主人公', 'しゅじんこう'),
+  '効果音': one('効果音', 'こうかおん'),
+  '準備中': one('準備中', 'じゅんびちゅう'),
+  '読み上げ': one('読み上げ', 'よみあげ'),
+  '手がかり': [{ text: '手', reading: 'て' }, { text: 'がかり' }],
+  '足あと': [{ text: '足', reading: 'あし' }, { text: 'あと' }],
+  '木もれ日': [{ text: '木', reading: 'こ' }, { text: 'もれ' }, { text: '日', reading: 'び' }],
+  '今日': one('今日', 'きょう'),
+  '時間': one('時間', 'じかん'),
+  '終了': one('終了', 'しゅうりょう'),
+  '表示': one('表示', 'ひょうじ'),
+  '音楽': one('音楽', 'おんがく'),
+  '体験版': one('体験版', 'たいけんばん'),
+  '追加': one('追加', 'ついか'),
+  '説明': one('説明', 'せつめい'),
+  '木曜日': one('木曜日', 'もくようび'),
+  '元気': one('元気', 'げんき'),
+  '文字': one('文字', 'もじ'),
+  '出会': one('出会', 'であ'),
+  '読み': [{ text: '読', reading: 'よ' }, { text: 'み' }],
+  '閉じ': [{ text: '閉', reading: 'と' }, { text: 'じ' }],
+  '開く': [{ text: '開', reading: 'ひら' }, { text: 'く' }],
+  '行く': [{ text: '行', reading: 'い' }, { text: 'く' }],
+  '見られ': [{ text: '見', reading: 'み' }, { text: 'られ' }],
+  '見つけ': [{ text: '見', reading: 'み' }, { text: 'つけ' }],
+  '集め': [{ text: '集', reading: 'あつ' }, { text: 'め' }],
+  '調べ': [{ text: '調', reading: 'しら' }, { text: 'べ' }],
+  '食べ': [{ text: '食', reading: 'た' }, { text: 'べ' }],
+  '合う': [{ text: '合', reading: 'あ' }, { text: 'う' }],
+  '光る': [{ text: '光', reading: 'ひか' }, { text: 'る' }],
+  '光って': [{ text: '光', reading: 'ひか' }, { text: 'って' }],
+  '光に': [{ text: '光', reading: 'ひかり' }, { text: 'に' }],
+  '近づ': [{ text: '近', reading: 'ちか' }, { text: 'づ' }],
+  '使': one('使', 'つか'),
+  '選': one('選', 'えら'),
+  '来': one('来', 'き'),
+  '追': one('追', 'お'),
+  '渡': one('渡', 'わた'),
+  '進': one('進', 'すす'),
+  '読': one('読', 'よ'),
+  '岩': one('岩', 'いわ'),
+  '橋': one('橋', 'はし'),
+  '葉': one('葉', 'は'),
+  '影': one('影', 'かげ'),
+  '首': one('首', 'くび'),
+  '板': one('板', 'いた'),
+  '洞': one('洞', 'どう'),
+  '暗': one('暗', 'くら'),
+  '深': one('深', 'ふか'),
+  '遠': one('遠', 'とお'),
+  '向': one('向', 'む'),
+  '道': one('道', 'みち'),
+  '風': one('風', 'かぜ'),
+  '頭': one('頭', 'あたま'),
+  '形': one('形', 'かたち'),
+  '高': one('高', 'たか'),
+  '前': one('前', 'まえ'),
+  '後': one('後', 'うしろ'),
+  '東': one('東', 'ひがし'),
+  '西': one('西', 'にし'),
+  '肉': one('肉', 'にく'),
+  '友': one('友', 'とも'),
+  '第': one('第', 'だい'),
+  '章': one('章', 'しょう'),
+  '問題': one('問題', 'もんだい'),
+  '背景': one('背景', 'はいけい'),
+  '会話': one('会話', 'かいわ'),
+  '動き': [{ text: '動', reading: 'うご' }, { text: 'き' }],
+  '少なく': [{ text: '少', reading: 'すく' }, { text: 'なく' }],
+  '書き': [{ text: '書', reading: 'か' }, { text: 'き' }]
+}
+
+const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+const terms = Object.keys(rules).sort((a, b) => b.length - a.length)
+const readingPattern = new RegExp(`(${terms.map(escapeRegExp).join('|')})`, 'g')
+
+const renderRule = (term: string, key: string) => rules[term].map((part, index) => part.reading
+  ? <ruby key={`${key}-${index}`}>{part.text}<rt>{part.reading}</rt></ruby>
+  : <span key={`${key}-${index}`}>{part.text}</span>)
+
+export function FuriganaText({ text, enabled = true }: { text: string; enabled?: boolean }): ReactNode {
+  if (!enabled) return text
+
+  return text.split(readingPattern).map((part, index) => rules[part]
+    ? <span key={`${part}-${index}`}>{renderRule(part, `${part}-${index}`)}</span>
+    : part)
+}
