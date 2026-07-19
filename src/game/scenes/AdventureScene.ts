@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { assetUrl } from '../../utils/assetUrl'
 import { gameEvents } from '../events/gameEvents'
 import type { SceneChapter, SceneId } from '../../types'
 import { customDinosaurScaleXForDirection, T_REX_OUTLINE, type CustomDinosaur } from '../../features/creations/creationModel'
@@ -73,27 +74,27 @@ export class AdventureScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('forest-watercolor', '/assets/backgrounds/forest-watercolor-v1.webp')
-    this.load.image('forest-fork-watercolor', '/assets/backgrounds/forest-fork-watercolor-v1.webp')
-    this.load.image('river-watercolor', '/assets/backgrounds/river-watercolor-v1.webp')
-    this.load.image('tracks-watercolor', '/assets/backgrounds/tracks-watercolor-v1.webp')
-    this.load.image('cave-watercolor', '/assets/backgrounds/cave-watercolor-v1.webp')
-    this.load.image('east-forest-watercolor', '/assets/backgrounds/east-forest-watercolor-v1.webp')
-    this.load.image('ending-watercolor', '/assets/backgrounds/ending-watercolor-v1.webp')
-    this.load.image('hero-front', '/assets/hero/hero-front.png')
-    this.load.image('hero-back', '/assets/hero/hero-back.png')
-    this.load.image('hero-side', '/assets/hero/hero-side.png')
-    this.load.image('hero-front-walk-a', '/assets/hero/hero-front-walk-a.png')
-    this.load.image('hero-front-walk-b', '/assets/hero/hero-front-walk-b.png')
-    this.load.image('hero-back-walk-a', '/assets/hero/hero-back-walk-a.png')
-    this.load.image('hero-back-walk-b', '/assets/hero/hero-back-walk-b.png')
-    this.load.image('hero-side-walk-a', '/assets/hero/hero-side-walk-a.png')
-    this.load.image('hero-side-walk-b', '/assets/hero/hero-side-walk-b.png')
-    this.load.image('dino-mojira', '/assets/dinosaurs/mojira.png')
-    this.load.image('dino-brachiosaurus', '/assets/dinosaurs/brachiosaurus.png')
-    this.load.image('dino-stegosaurus', '/assets/dinosaurs/stegosaurus.png')
-    this.load.image('dino-triceratops', '/assets/dinosaurs/triceratops.png')
-    this.load.image('dino-tyrannosaurus', '/assets/dinosaurs/tyrannosaurus.png')
+    this.load.image('forest-watercolor', assetUrl('assets/backgrounds/forest-watercolor-v1.webp'))
+    this.load.image('forest-fork-watercolor', assetUrl('assets/backgrounds/forest-fork-watercolor-v1.webp'))
+    this.load.image('river-watercolor', assetUrl('assets/backgrounds/river-watercolor-v1.webp'))
+    this.load.image('tracks-watercolor', assetUrl('assets/backgrounds/tracks-watercolor-v1.webp'))
+    this.load.image('cave-watercolor', assetUrl('assets/backgrounds/cave-watercolor-v1.webp'))
+    this.load.image('east-forest-watercolor', assetUrl('assets/backgrounds/east-forest-watercolor-v1.webp'))
+    this.load.image('ending-watercolor', assetUrl('assets/backgrounds/ending-watercolor-v1.webp'))
+    this.load.image('hero-front', assetUrl('assets/hero/hero-front.png'))
+    this.load.image('hero-back', assetUrl('assets/hero/hero-back.png'))
+    this.load.image('hero-side', assetUrl('assets/hero/hero-side.png'))
+    this.load.image('hero-front-walk-a', assetUrl('assets/hero/hero-front-walk-a.png'))
+    this.load.image('hero-front-walk-b', assetUrl('assets/hero/hero-front-walk-b.png'))
+    this.load.image('hero-back-walk-a', assetUrl('assets/hero/hero-back-walk-a.png'))
+    this.load.image('hero-back-walk-b', assetUrl('assets/hero/hero-back-walk-b.png'))
+    this.load.image('hero-side-walk-a', assetUrl('assets/hero/hero-side-walk-a.png'))
+    this.load.image('hero-side-walk-b', assetUrl('assets/hero/hero-side-walk-b.png'))
+    this.load.image('dino-mojira', assetUrl('assets/dinosaurs/mojira.png'))
+    this.load.image('dino-brachiosaurus', assetUrl('assets/dinosaurs/brachiosaurus.png'))
+    this.load.image('dino-stegosaurus', assetUrl('assets/dinosaurs/stegosaurus.png'))
+    this.load.image('dino-triceratops', assetUrl('assets/dinosaurs/triceratops.png'))
+    this.load.image('dino-tyrannosaurus', assetUrl('assets/dinosaurs/tyrannosaurus.png'))
   }
 
   create() {
