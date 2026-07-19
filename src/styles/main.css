@@ -147,6 +147,8 @@ rt { color: #6b6657; font-size: .48em; font-weight: 800; line-height: 1; letter-
 
 .story-layer { position: fixed; inset: var(--game-header-height) 0 0; z-index: 20; pointer-events: none; display: grid; place-items: end center; padding: 18px max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left)); }
 .story-layer > * { pointer-events: auto; }
+.story-layer--explore { place-items: end end; }
+.story-layer--modal { place-items: center; background: rgba(23,63,53,.32); backdrop-filter: blur(2px); }
 .story-layer:has(.explore-panel) { place-items: end end; }
 .story-panel { position: relative; width: min(840px, calc(100vw - 36px)); min-height: 150px; display: flex; align-items: center; gap: 18px; padding: 18px 22px; border: 4px solid #102f29; border-radius: 8px; background: linear-gradient(180deg, rgba(255,250,224,.98), rgba(246,235,194,.98)); box-shadow: 0 0 0 3px #d2aa52, 0 9px 0 rgba(16,47,41,.72), 0 18px 38px rgba(11,35,29,.22); }
 .story-panel::before { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(116,88,42,.28); pointer-events: none; }
@@ -292,7 +294,7 @@ rt { color: #6b6657; font-size: .48em; font-weight: 800; line-height: 1; letter-
   .game-stage { height: 46dvh; min-height: 285px; }
   .story-layer { inset: calc(66px + 46dvh) 0 0; display: block; overflow-y: auto; padding-top: 9px; background: #e9e0bd; }
   .story-layer > * { margin-inline: auto; }
-  .story-layer:has(.question-panel), .story-layer:has(.choice-panel), .story-layer:has(.minigame-panel), .story-layer:has(.detective-panel), .story-layer:has(.reward-panel), .story-layer:has(.chapter-complete), .story-layer:has(.ending-summary) { display: grid; place-items: start center; background: #e9e0bd; backdrop-filter: none; }
+  .story-layer--modal, .story-layer:has(.question-panel), .story-layer:has(.choice-panel), .story-layer:has(.minigame-panel), .story-layer:has(.detective-panel), .story-layer:has(.reward-panel), .story-layer:has(.chapter-complete), .story-layer:has(.ending-summary) { display: grid; place-items: start center; background: #e9e0bd; backdrop-filter: none; }
   .touch-controls { bottom: 8px; }.dpad { transform: scale(.65); }.action-button { width: 76px; height: 76px; }
   .egg-meter { transform: scale(.82); transform-origin: left top; }
   .dialogue-copy > .button { float: none; width: 100%; }
@@ -351,7 +353,7 @@ rt { color: #6b6657; font-size: .48em; font-weight: 800; line-height: 1; letter-
     backdrop-filter: none;
   }
   /* 探検中の目標カードは、マップ直下から読める位置に置く */
-  .story-layer:has(.explore-panel) { place-items: start center; }
+  .story-layer--explore, .story-layer:has(.explore-panel) { place-items: start center; }
   .story-layer > * { width: min(820px, calc(100vw - 32px)); margin-inline: auto; }
   .story-panel { min-height: 150px; }
   .touch-controls { bottom: max(12px, env(safe-area-inset-bottom)); }

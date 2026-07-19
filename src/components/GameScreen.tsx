@@ -350,6 +350,11 @@ export function GameScreen({ save, updateSave, onTitle, onSettings, onEncycloped
   const targetLabel = isExplore ? beat.targetLabel : ''
   const progressPercent = Math.round(Math.min(save.progress.sceneStep, chapter.beats.length) / chapter.beats.length * 100)
   const canWalkAround = isExplore || (beat?.type === 'minigame' && miniGamePaused)
+  const storyLayerMode = encounter
+    ? 'story-layer--dialogue'
+    : beat?.type === 'explore'
+      ? 'story-layer--explore'
+      : 'story-layer--modal'
   const handleMiniGamePauseChange = useCallback((paused: boolean) => setMiniGamePaused(paused), [])
 
   return (
@@ -373,7 +378,7 @@ export function GameScreen({ save, updateSave, onTitle, onSettings, onEncycloped
         {caseToast && <div className="case-update-toast" role="status">{caseToast}</div>}
         {canWalkAround && !encounter && <TouchControls />}
       </section>
-      <div className="story-layer">
+      <div className={`story-layer ${storyLayerMode}`}>
         {encounter ? <DialoguePanel entry={encounter} settings={save.settings} onNext={() => setEncounter(null)} disabled={transitionLocked} /> : <>
           {beat?.type === 'dialogue' && <DialoguePanel entry={beat.entry} settings={save.settings} onNext={advance} disabled={transitionLocked} />}
           {beat?.type === 'explore' && <ExplorePanel beat={beat} proximity={proximity} furiganaEnabled={save.settings.hiraganaAssist} />}
