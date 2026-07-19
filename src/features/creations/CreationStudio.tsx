@@ -163,7 +163,12 @@ export function CreationStudio({ onBack, onGallery, onAdventure }: { onBack: () 
 
   const svgPoint = useCallback((event: ReactPointerEvent<SVGSVGElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect()
-    return { x: (event.clientX - bounds.left) / bounds.width * CREATION_VIEWBOX_WIDTH, y: (event.clientY - bounds.top) / bounds.height * CREATION_VIEWBOX_HEIGHT }
+    const scale = Math.min(bounds.width / CREATION_VIEWBOX_WIDTH, bounds.height / CREATION_VIEWBOX_HEIGHT)
+    const renderedWidth = CREATION_VIEWBOX_WIDTH * scale
+    const renderedHeight = CREATION_VIEWBOX_HEIGHT * scale
+    const offsetX = (bounds.width - renderedWidth) / 2
+    const offsetY = (bounds.height - renderedHeight) / 2
+    return { x: (event.clientX - bounds.left - offsetX) / scale, y: (event.clientY - bounds.top - offsetY) / scale }
   }, [])
 
   const commitStroke = useCallback(() => {
@@ -279,10 +284,11 @@ export function CreationStudio({ onBack, onGallery, onAdventure }: { onBack: () 
     <header className="creation-studio-header">
       <button className="button button--secondary" onClick={onBack}>← もどる</button>
       <div><p className="eyebrow">うまれる！ きょうりゅう</p><h1>{completed ? 'できた！' : 'ティラノサウルス'}</h1></div>
-      <div className="creation-step-status"><strong>{completed ? '8／8' : `${stepIndex + 1}／8`}</strong><small>{completed ? 'かんせい！' : remaining === 0 ? 'もうすこし！' : `あと${remaining}ほん`}</small><span>{saveState === 'saved' ? '● ほぞんしたよ' : '○ ほぞんちゅう'}</span></div>
+      <div className="creation-step-status"><strong>{completed ? '8／8' : `${stepIndex + 1}／8`}</strong><small>{completed ? 'かんせい！' : remaining === 0 ? 'もうすこし！' : `あと${remaining}ほん`}</small><span className={tracing ? 'is-tracing' : ''} aria-live="polite">{tracing ? '✏️ おえかき中' : saveState === 'saved' ? '● ほぞんしたよ' : '○ ほぞんちゅう'}</span></div>
     </header>
     <p className={`creation-instruction${stepDone ? ' is-done' : ''}`}>{completed ? 'きみの きょうりゅうが、ぼうけんの なかまになったよ！' : currentStep.instruction}</p>
-    <section className="creation-board">
+    <section className={`creation-board${tracing ? ' is-tracing' : ''}`}>
+      <div className={`creation-board-status${tracing ? ' is-active' : ''}`} role="status" aria-live="polite">{tracing ? '✏️ おえかき中…' : stepDone ? 'できた！ つぎへすすもう' : '👆 指でなぞってね'}</div>
       <svg ref={drawingRef} className={`creation-drawing-svg${tracing ? ' is-tracing' : ''}`} viewBox={`0 0 ${CREATION_VIEWBOX_WIDTH} ${CREATION_VIEWBOX_HEIGHT}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label="ティラノサウルスを8ほんのせんでかく" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={stopTracing} onPointerCancel={stopTracing}>
         {(showExample || completed) && <path d={T_REX_OUTLINE} fill={completed ? selectedColor : 'none'} opacity={completed ? 0.92 : 0.12} stroke={showExample && !completed ? '#385548' : 'none'} strokeWidth="10" />}
         {visibleStrokes.map((stroke, index) => <path key={`${stroke.stepIndex}-${index}`} d={creationStrokePath(stroke.points)} fill="none" stroke={completed ? '#302f2a' : selectedColor} strokeWidth="16" strokeLinecap="round" strokeLinejoin="round" opacity={completed || stroke.stepIndex === stepIndex ? 1 : 0.48} />)}
@@ -292,7 +298,7 @@ export function CreationStudio({ onBack, onGallery, onAdventure }: { onBack: () 
         </>}
       </svg>
     </section>
-    {!completed ? <div className="creation-actions"><button className="button button--secondary" onClick={goBack} disabled={stepIndex === 0 || tracing}>ひとつ もどる</button><button className="button button--secondary" onClick={() => setShowExample((value) => !value)} disabled={tracing}>{showExample ? 'おてほんを とじる' : 'おてほん'}</button><button className="button button--primary button--large" onClick={goNext} disabled={!stepDone || tracing}>{stepIndex === 7 ? 'できた！' : 'つぎへ →'}</button></div> : <div className="creation-complete-actions"><button className="button button--primary button--large" onClick={() => savedCreation && onAdventure(savedCreation)}>このこを ぼうけんへ！ →</button><button className="button button--secondary" onClick={onGallery}>じぶんの きょうりゅう</button><button className="button button--secondary" onClick={startFresh}>もういちど かく</button></div>}
+    {!completed ? <div className={`creation-actions${tracing ? ' is-paused' : ''}`} aria-label={tracing ? 'おえかき中はボタンをおやすみしています' : undefined}><button className="button button--secondary" onClick={goBack} disabled={stepIndex === 0 || tracing}>ひとつ もどる</button><button className="button button--secondary" onClick={() => setShowExample((value) => !value)} disabled={tracing}>{showExample ? 'おてほんを とじる' : 'おてほん'}</button><button className="button button--primary button--large" onClick={goNext} disabled={!stepDone || tracing}>{stepIndex === 7 ? 'できた！' : 'つぎへ →'}</button></div> : <div className="creation-complete-actions"><button className="button button--primary button--large" onClick={() => savedCreation && onAdventure(savedCreation)}>このこを ぼうけんへ！ →</button><button className="button button--secondary" onClick={onGallery}>じぶんの きょうりゅう</button><button className="button button--secondary" onClick={startFresh}>もういちど かく</button></div>}
     <section className="creation-palette" aria-label="クレヨンの いろ"><p>{completed ? 'からだの いろを えらべるよ' : 'すきな クレヨンを えらんでね'}</p><div>{CREATION_COLORS.map((color) => <button key={color.value} type="button" aria-label={`${color.name}のクレヨン`} aria-pressed={selectedColor === color.value} onClick={() => recolor(color.value)} style={{ background: color.value }} />)}</div></section>
   </main>
 }

@@ -394,3 +394,111 @@ rt { color: #6b6657; font-size: .48em; font-weight: 800; line-height: 1; letter-
   -webkit-user-select: none;
   -webkit-touch-callout: none;
 }
+
+/* Drawing studio: give the child a generous canvas and keep the crayons within reach. */
+.creation-studio-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding-bottom: calc(126px + env(safe-area-inset-bottom, 0px));
+}
+
+.creation-studio-header,
+.creation-board,
+.creation-actions,
+.creation-complete-actions {
+  width: min(1120px, 100%);
+}
+
+.creation-board {
+  position: relative;
+  flex: 1 0 auto;
+  min-height: clamp(360px, 56dvh, 700px);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.creation-board.is-tracing {
+  border-color: var(--orange);
+  box-shadow: 0 8px 0 rgba(23,63,53,.22), 0 0 0 4px rgba(220,116,75,.14);
+}
+
+.creation-board-status {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  left: 50%;
+  padding: 5px 13px;
+  border: 2px solid var(--orange);
+  border-radius: 999px;
+  background: #fff1ce;
+  color: #b94f35;
+  font-size: .72rem;
+  font-weight: 900;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -6px);
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+.creation-board-status.is-active {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.creation-drawing-svg {
+  height: clamp(340px, 54dvh, 680px);
+  min-height: 340px;
+  aspect-ratio: auto;
+}
+
+.creation-actions.is-paused {
+  opacity: .7;
+}
+
+.creation-step-status span.is-tracing {
+  color: var(--orange);
+}
+
+.creation-palette {
+  position: fixed;
+  z-index: 80;
+  left: 50%;
+  bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  width: min(760px, calc(100vw - 24px));
+  margin: 0;
+  padding: 8px 12px max(8px, env(safe-area-inset-bottom, 0px));
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  background: rgba(255,253,240,.94);
+  box-shadow: 0 6px 0 rgba(23,63,53,.3), 0 10px 28px rgba(16,40,34,.18);
+  backdrop-filter: blur(10px);
+  transform: translateX(-50%);
+}
+
+.creation-palette > div {
+  padding-bottom: 2px;
+}
+
+@media (max-width: 620px) {
+  .creation-studio-page {
+    padding-bottom: calc(116px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .creation-board {
+    min-height: clamp(360px, 58dvh, 560px);
+  }
+
+  .creation-drawing-svg {
+    height: clamp(340px, 56dvh, 540px);
+  }
+
+  .creation-palette {
+    width: calc(100vw - 18px);
+    padding-inline: 8px;
+  }
+
+  .creation-palette > div {
+    justify-content: flex-start;
+  }
+}
