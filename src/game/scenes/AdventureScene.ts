@@ -25,7 +25,6 @@ export class AdventureScene extends Phaser.Scene {
   private targetIcon!: Phaser.GameObjects.Graphics
   private targetText!: Phaser.GameObjects.Text
   private obstacles!: Phaser.Physics.Arcade.StaticGroup
-  private keys!: Record<string, Phaser.Input.Keyboard.Key>
   private touchDirections = new Set<'left' | 'right' | 'up' | 'down'>()
   private objectiveActive = false
   private autoInteractTriggered = false
@@ -116,8 +115,6 @@ export class AdventureScene extends Phaser.Scene {
     if (this.sceneId === 'river' && this.bridgeRepaired) this.createRepairedBridgeVisual()
 
     this.physics.add.collider(this.player, this.obstacles)
-    this.keys = this.input.keyboard?.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,ENTER,SPACE') as Record<string, Phaser.Input.Keyboard.Key>
-
     this.cameras.main.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT)
     this.cameras.main.startFollow(this.player, true, 0.11, 0.11)
     this.cameras.main.setDeadzone(180, 120)
@@ -150,11 +147,11 @@ export class AdventureScene extends Phaser.Scene {
   }
 
   update() {
-    if (!this.player || !this.keys) return
-    const left = this.keys.LEFT.isDown || this.keys.A.isDown || this.touchDirections.has('left')
-    const right = this.keys.RIGHT.isDown || this.keys.D.isDown || this.touchDirections.has('right')
-    const up = this.keys.UP.isDown || this.keys.W.isDown || this.touchDirections.has('up')
-    const down = this.keys.DOWN.isDown || this.keys.S.isDown || this.touchDirections.has('down')
+    if (!this.player) return
+    const left = this.touchDirections.has('left')
+    const right = this.touchDirections.has('right')
+    const up = this.touchDirections.has('up')
+    const down = this.touchDirections.has('down')
     const dx = (right ? 1 : 0) - (left ? 1 : 0)
     const dy = (down ? 1 : 0) - (up ? 1 : 0)
     const moving = dx !== 0 || dy !== 0

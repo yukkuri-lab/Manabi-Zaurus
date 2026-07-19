@@ -14,7 +14,7 @@ import { DetectivePanel } from './DetectivePanel'
 import { FuriganaText } from './FuriganaText'
 import { MiniGamePanel } from './MiniGamePanel'
 import { QuestionPanel } from './QuestionPanel'
-import { TouchControls } from './TouchControls'
+import { TouchMoveSurface } from './TouchMoveSurface'
 import type { CustomDinosaur } from '../features/creations/creationModel'
 
 interface GameScreenProps {
@@ -376,7 +376,7 @@ export function GameScreen({ save, updateSave, onTitle, onSettings, onEncycloped
         </div>
         {sparkleToast && <div className="sparkle-toast" role="status"><span aria-hidden="true">★</span>{sparkleToast}</div>}
         {caseToast && <div className="case-update-toast" role="status">{caseToast}</div>}
-        {canWalkAround && !encounter && <TouchControls />}
+        {canWalkAround && !encounter && <TouchMoveSurface />}
       </section>
       <div className={`story-layer ${storyLayerMode}`}>
         {encounter ? <DialoguePanel entry={encounter} settings={save.settings} onNext={() => setEncounter(null)} disabled={transitionLocked} /> : <>

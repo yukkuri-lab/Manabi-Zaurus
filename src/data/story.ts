@@ -6,7 +6,7 @@ export const chapters: SceneChapter[] = [
     beats: [
       { type: 'dialogue', entry: { speaker: 'モジラ', text: 'ここは 本物の きょうりゅうが くらす「きょうりゅうの森」だよ。きみは 図鑑の 光に つつまれて、この世界へ 来たんだ。', emotion: 'surprised' } },
       { type: 'dialogue', entry: { speaker: 'モジラ', text: '森の ずっと おくには、だれも 見たことがない「まぼろしの ティラノサウルス」が いるんだって！ いっしょに 会いにいこう。', emotion: 'happy' } },
-      { type: 'dialogue', entry: { speaker: 'モジラ', text: '矢印キーか 画面の ボタンで 歩けるよ。光る しるしの 近くまで 行くと、自動で 見つけられるよ。', emotion: 'calm' } },
+      { type: 'dialogue', entry: { speaker: 'モジラ', text: '画面を おして ひっぱると 歩けるよ。PCは トラックパッドを おして ひっぱってね。光る しるしの 近くまで 行くと、自動で 見つけられるよ。', emotion: 'calm' } },
       { type: 'explore', objective: '小さな足あとを たどって トリケラトプスを さがそう', targetLabel: 'トリケラトプス', hint: '森に のこった 足あとを たどって、おくまで 行ってみよう。' },
       { type: 'dialogue', entry: { speaker: 'トリケラトプス', portraitId: 'baby-triceratops', text: 'おなかが ぺこぺこなんだ。ぼくが 食べるのは「草」と「肉」、どっちかな？', emotion: 'thinking' } },
       { type: 'question', question: { id: 'forest-help-triceratops', kanjiId: 'g1-kusa', prompt: 'トリケラトプスが 食べるのは？', speechText: 'トリケラトプスが たべるのは、くさと にく、どっちかな？', correctAnswer: '草', choices: ['草', '肉'], hint: 'トリケラトプスは みどりの はっぱが だいすき。', explanation: '「草」を えらんで、元気に できたね！' } },
