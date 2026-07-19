@@ -386,3 +386,11 @@ rt { color: #6b6657; font-size: .48em; font-weight: 800; line-height: 1; letter-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Keep iPhone Safari gestures inside the drawing surface. */
+.creation-drawing-svg {
+  touch-action: none;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}

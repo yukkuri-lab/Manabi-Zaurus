@@ -39,6 +39,7 @@ const softlySnappedPoint = (point: CreationPoint, guide: CreationPoint) => {
 
 export function CreationStudio({ onBack, onGallery, onAdventure }: { onBack: () => void; onGallery: () => void; onAdventure: (creation: CustomDinosaur) => void }) {
   const steps = useMemo(createSteps, [])
+  const drawingRef = useRef<SVGSVGElement>(null)
   const guideRef = useRef<SVGPathElement>(null)
   const samplesRef = useRef<RouteSample[]>([])
   const progressRef = useRef(0)
@@ -60,6 +61,40 @@ export function CreationStudio({ onBack, onGallery, onAdventure }: { onBack: () 
   const [saveState, setSaveState] = useState<'saving' | 'saved'>('saving')
   const [savedCreation, setSavedCreation] = useState<CustomDinosaur | null>(null)
   const currentStep = steps[stepIndex]
+
+  // iPhone Safari can keep scrolling a page even when the React pointer
+  // handlers are running. Keep the drawing surface non-passive so the
+  // browser cannot turn a stroke into page scroll or a pinch gesture.
+  useEffect(() => {
+    const drawingSurface = drawingRef.current
+    if (!drawingSurface) return
+
+    const preventTouchScroll = (event: TouchEvent) => event.preventDefault()
+    const preventSafariGesture = (event: Event) => event.preventDefault()
+    const nonPassive = { passive: false }
+
+    drawingSurface.addEventListener('touchmove', preventTouchScroll, nonPassive)
+    drawingSurface.addEventListener('gesturestart', preventSafariGesture, nonPassive)
+    drawingSurface.addEventListener('gesturechange', preventSafariGesture, nonPassive)
+    drawingSurface.addEventListener('gestureend', preventSafariGesture, nonPassive)
+    return () => {
+      drawingSurface.removeEventListener('touchmove', preventTouchScroll)
+      drawingSurface.removeEventListener('gesturestart', preventSafariGesture)
+      drawingSurface.removeEventListener('gesturechange', preventSafariGesture)
+      drawingSurface.removeEventListener('gestureend', preventSafariGesture)
+    }
+  }, [])
+
+  // Lock only while a stroke is active, then return the page to normal
+  // scrolling as soon as the finger, mouse, or Apple Pencil is lifted.
+  useEffect(() => {
+    if (!tracing) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previousOverflow || 'auto'
+    }
+  }, [tracing])
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -248,7 +283,7 @@ export function CreationStudio({ onBack, onGallery, onAdventure }: { onBack: () 
     </header>
     <p className={`creation-instruction${stepDone ? ' is-done' : ''}`}>{completed ? 'きみの きょうりゅうが、ぼうけんの なかまになったよ！' : currentStep.instruction}</p>
     <section className="creation-board">
-      <svg className={`creation-drawing-svg${tracing ? ' is-tracing' : ''}`} viewBox={`0 0 ${CREATION_VIEWBOX_WIDTH} ${CREATION_VIEWBOX_HEIGHT}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label="ティラノサウルスを8ほんのせんでかく" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={stopTracing} onPointerCancel={stopTracing}>
+      <svg ref={drawingRef} className={`creation-drawing-svg${tracing ? ' is-tracing' : ''}`} viewBox={`0 0 ${CREATION_VIEWBOX_WIDTH} ${CREATION_VIEWBOX_HEIGHT}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label="ティラノサウルスを8ほんのせんでかく" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={stopTracing} onPointerCancel={stopTracing}>
         {(showExample || completed) && <path d={T_REX_OUTLINE} fill={completed ? selectedColor : 'none'} opacity={completed ? 0.92 : 0.12} stroke={showExample && !completed ? '#385548' : 'none'} strokeWidth="10" />}
         {visibleStrokes.map((stroke, index) => <path key={`${stroke.stepIndex}-${index}`} d={creationStrokePath(stroke.points)} fill="none" stroke={completed ? '#302f2a' : selectedColor} strokeWidth="16" strokeLinecap="round" strokeLinejoin="round" opacity={completed || stroke.stepIndex === stepIndex ? 1 : 0.48} />)}
         {!completed && <>
@@ -257,7 +292,7 @@ export function CreationStudio({ onBack, onGallery, onAdventure }: { onBack: () 
         </>}
       </svg>
     </section>
-    {!completed ? <div className="creation-actions"><button className="button button--secondary" onClick={goBack} disabled={stepIndex === 0}>ひとつ もどる</button><button className="button button--secondary" onClick={() => setShowExample((value) => !value)}>{showExample ? 'おてほんを とじる' : 'おてほん'}</button><button className="button button--primary button--large" onClick={goNext} disabled={!stepDone}>{stepIndex === 7 ? 'できた！' : 'つぎへ →'}</button></div> : <div className="creation-complete-actions"><button className="button button--primary button--large" onClick={() => savedCreation && onAdventure(savedCreation)}>このこを ぼうけんへ！ →</button><button className="button button--secondary" onClick={onGallery}>じぶんの きょうりゅう</button><button className="button button--secondary" onClick={startFresh}>もういちど かく</button></div>}
+    {!completed ? <div className="creation-actions"><button className="button button--secondary" onClick={goBack} disabled={stepIndex === 0 || tracing}>ひとつ もどる</button><button className="button button--secondary" onClick={() => setShowExample((value) => !value)} disabled={tracing}>{showExample ? 'おてほんを とじる' : 'おてほん'}</button><button className="button button--primary button--large" onClick={goNext} disabled={!stepDone || tracing}>{stepIndex === 7 ? 'できた！' : 'つぎへ →'}</button></div> : <div className="creation-complete-actions"><button className="button button--primary button--large" onClick={() => savedCreation && onAdventure(savedCreation)}>このこを ぼうけんへ！ →</button><button className="button button--secondary" onClick={onGallery}>じぶんの きょうりゅう</button><button className="button button--secondary" onClick={startFresh}>もういちど かく</button></div>}
     <section className="creation-palette" aria-label="クレヨンの いろ"><p>{completed ? 'からだの いろを えらべるよ' : 'すきな クレヨンを えらんでね'}</p><div>{CREATION_COLORS.map((color) => <button key={color.value} type="button" aria-label={`${color.name}のクレヨン`} aria-pressed={selectedColor === color.value} onClick={() => recolor(color.value)} style={{ background: color.value }} />)}</div></section>
   </main>
 }
